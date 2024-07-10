@@ -27,7 +27,14 @@ def test_create_new_pet():
         ],
         "status": "available"
     }
-    response = requests.post(ENDPOINT + "/v2/pet", json=payload)
-    data = response.json()
+    create_pet_response = requests.post(ENDPOINT + "/v2/pet", json=payload)
+   
+    data = create_pet_response.json()
     print(data)
     
+    pet_id = data["id"]
+    get_pet_by_id_response = requests.get(ENDPOINT + f"/v2/pet/{pet_id}")
+    get_pet_by_id = get_pet_by_id_response.json()
+    assert get_pet_by_id["id"] == pet_id
+    assert get_pet_by_id["name"] == payload["name"]
+    assert get_pet_by_id["status"] == payload["status"]
