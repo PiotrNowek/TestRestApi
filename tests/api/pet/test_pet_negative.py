@@ -27,7 +27,7 @@ def test_add_pet_with_missing_id():
         "status": "available"
     }
     response = requests.post(ENDPOINT + "/v2/pet", json=payload)
-    assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
+    assert response.status_code == 400, f"Expected status code 400, but got {response.status_code}"
 
 
 def test_add_pet_with_invalid_id():
@@ -52,7 +52,7 @@ def test_add_pet_with_invalid_id():
     }
 
     response = requests.post(ENDPOINT + "/v2/pet", json=payload, headers=headers)
-    assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
+    assert response.status_code == 400, f"Expected status code 400, but got {response.status_code}"
 
 
 def test_add_pet_with_empty_id():
@@ -77,7 +77,7 @@ def test_add_pet_with_empty_id():
     }
 
     response = requests.post(ENDPOINT + "/v2/pet", json=payload, headers=headers)
-    assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"    
+    assert response.status_code == 400, f"Expected status code 400, but got {response.status_code}"    
 
     
 
@@ -127,7 +127,96 @@ def test_delete_nonexist_pet():
     assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
  
 
+def test_invalid_Content_Type_header():
+    payload = {
+        "id": 5050,  
+        "category": {
+            "id": 0,
+            "name": "string"
+        },
+        "name": "dog",
+        "photoUrls": ["string"],
+        "tags": [
+            {
+                "id": 0,
+                "name": "string"
+            }
+        ],
+        "status": "available"
+    }
+    headers = {
+        "Content-Type": "text/plain"
+    }
+    response = requests.post(ENDPOINT + "/v2/pet", json=payload, headers=headers)
+    assert response.status_code == 415, f"Expected status code 415, but got {response.status_code}"
+    
 
 
+def test_missing_Content_Type_header():
+    payload = {
+        "id": 50505,  
+        "category": {
+            "id": 0,
+            "name": "string"
+        },
+        "name": "dog",
+        "photoUrls": ["string"],
+        "tags": [
+            {
+                "id": 0,
+                "name": "string"
+            }
+        ],
+        "status": "available"
+    }
+    headers = {
+    }
+    response = requests.post(ENDPOINT + "/v2/pet", json=payload, headers=headers)
+    assert response.status_code == 415, f"Expected status code 415, but got {response.status_code}"
 
 
+def test_empty_Content_Type_header():
+    payload = {
+        "id": 505050,  
+        "category": {
+            "id": 0,
+            "name": "string"
+        },
+        "name": "dog",
+        "photoUrls": ["string"],
+        "tags": [
+            {
+                "id": 0,
+                "name": "string"
+            }
+        ],
+        "status": "available"
+    }
+    headers = {
+        "Content-Type" : ""
+    }
+    response = requests.post(ENDPOINT + "/v2/pet", json=payload, headers=headers)
+    assert response.status_code == 415, f"Expected status code 415, but got {response.status_code}"
+
+
+def test_requesting_invalid_endpoint():
+    payload = {
+        "id": 10010,
+        "category": {
+            "id": 0,
+            "name": "string"
+        },
+        "name": "dog",
+        "photoUrls": [
+            "string"
+        ],
+        "tags": [
+            {
+                "id": 0,
+                "name": "string"
+            }
+        ],
+        "status": "available"
+    }
+    response = requests.get(ENDPOINT + "/v2/pet/invalid", json=payload)
+    assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
