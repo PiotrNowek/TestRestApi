@@ -11,10 +11,15 @@ def test_check_endpoint():
     assert response.status_code == 200
 
 
-def test_returns_pet_inventories_by_status():
-    return_pet_response = requests.get(ENDPOINT + "/v2/store/inventory")
-    assert return_pet_response.status_code == 200
-
+def test_get_pet_list_by_status():
+    response = requests.get(f"{ENDPOINT}/v2/store/inventory")
+    assert response.status_code == 200, f"Failed to create list, status code: {response.status_code}"
+    assert response.headers['Content-Type'] == 'application/json', f"Expected application/json but got {response.headers['Content-Type']}"
+    try:
+        response = response.json()
+    except ValueError:
+        assert False, "Response is not in JSON format"
+    assert isinstance(response, dict), "Expected response to be a dictionary"
 
 @pytest.fixture
 def new_order():
