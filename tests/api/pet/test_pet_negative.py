@@ -113,7 +113,7 @@ def non_exist_pet():
     }
 
 
-def test_update_nonexist_pet(non_exist_pet):
+def test_update_non_exist_pet(non_exist_pet):
     response = requests.put(ENDPOINT + "/v2/pet", json=non_exist_pet)
     assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
     response_data = response.json()
@@ -121,7 +121,7 @@ def test_update_nonexist_pet(non_exist_pet):
     assert response_data["message"] == "Pet not found", f"Expected error message 'Pet not found', but got {response_data['message']}"
   
 
-def test_delete_nonexist_pet():
+def test_delete_non_exist_pet():
     non_exist_pet_id = 8888888 # We assume this ID does not exist
     response = requests.delete(ENDPOINT + f"/v2/pet/{non_exist_pet_id}")
     assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
