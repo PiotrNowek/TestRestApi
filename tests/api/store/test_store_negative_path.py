@@ -1,9 +1,7 @@
 import pytest
 import requests
 
-
-ENDPOINT = "https://petstore.swagger.io"
-ORDER_ENDPOINT = f"{ENDPOINT}/v2/store/order"
+from config.config import ENDPOINT, ORDER_ENDPOINT
 
 
 def test_check_endpoint():
