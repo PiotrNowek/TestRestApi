@@ -31,7 +31,10 @@ def test_create_new_pet():
     data = create_pet_response.json()
     
     pet_id = data["id"]
+
     get_pet_by_id_response = get_pets_by_id(pet_id)
+
+
     assert get_pet_by_id_response.status_code == 200
     
     get_pet_by_id = get_pet_by_id_response.json()
@@ -84,7 +87,9 @@ def test_update_pet():
 
     data = update_pet_response.json()
     pet_id = data["id"]
+
     get_pet_by_id_response = get_pets_by_id(pet_id)
+
     assert get_pet_by_id_response.status_code == 200
     get_pet_by_id = get_pet_by_id_response.json()
     assert get_pet_by_id["id"] == pet_id
@@ -118,13 +123,17 @@ def test_delete_pet():
     delete_pet_by_id = delete_pet(pet_id)
     assert delete_pet_by_id.status_code == 200
 
+
     get_pet_by_id_response = get_pets_by_id(pet_id)
+
     assert get_pet_by_id_response.status_code == 404
 
 def create_pet(payload):
     return requests.post(ENDPOINT + "/v2/pet", json=payload)
 
+
 def get_pets_by_id(pet_id):
+
     return requests.get(ENDPOINT + f"/v2/pet/{pet_id}")
 
 def update_pet(payload):
