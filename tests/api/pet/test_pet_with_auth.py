@@ -1,8 +1,8 @@
 import pytest
 import requests
 
-ENDPOINT = "https://petstore.swagger.io/v2"
-LOGIN_URL = ENDPOINT + "/user/login"
+from config.config import ENDPOINT, LOGIN_URL
+
 
 @pytest.fixture
 def auth_token():
@@ -38,7 +38,7 @@ def test_add_pet_authorized(auth_token):
         "Content-Type": "application/json",
         "api_key": auth_token
     }
-    response = requests.post(ENDPOINT + "/pet", json=payload, headers=headers)
+    response = requests.post(ENDPOINT + "/v2/pet", json=payload, headers=headers)
     assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
     data = response.json()
     assert data["name"] == payload["name"], f"Expected name {payload['name']}, but got {data['name']}"

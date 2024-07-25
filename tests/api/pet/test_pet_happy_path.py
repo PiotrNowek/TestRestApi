@@ -1,7 +1,6 @@
 import requests
 
-
-ENDPOINT = "https://petstore.swagger.io"
+from config.config import ENDPOINT
 
 
 def test_check_endpoint():
@@ -83,10 +82,10 @@ def test_update_pet():
         ],
         "status": "sold"
     }
-    udate_pet_response = update_pet(new_payload)
-    assert udate_pet_response.status_code == 200
+    update_pet_response = update_pet(new_payload)
+    assert update_pet_response.status_code == 200
 
-    data = udate_pet_response.json()
+    data = update_pet_response.json()
     pet_id = data["id"]
 
     get_pet_by_id_response = get_pets_by_id(pet_id)
