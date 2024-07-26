@@ -100,3 +100,25 @@ def base_user():
         "phone": "123456789",
         "userStatus": 0
     }
+
+
+@pytest.fixture
+def base_pet():
+    return {
+        "id": 0,
+        "category": {
+            "id": 0,
+            "name": "string"
+        },
+        "name": "dog",
+        "photoUrls": [
+            "string"
+        ],
+        "tags": [
+            {
+                "id": 0,
+                "name": "string"
+            }
+        ],
+        "status": "available"
+    }
