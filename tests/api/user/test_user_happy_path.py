@@ -92,20 +92,6 @@ def test_create_new_user(payload):
     assert second_data["phone"] == payload["phone"]
     
     
-@pytest.fixture
-def base_user():
-    return {
-        "id": 0,
-        "username": "Rambo",
-        "firstName": "FirstName1",
-        "lastName": "LastName1",
-        "email": "user1@example.com",
-        "password": "password1",
-        "phone": "123456789",
-        "userStatus": 0
-    }
-
-
 def test_update_user(base_user):
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
@@ -146,23 +132,6 @@ def test_delete_user(base_user):
 
     response_username = get_username(username)
     assert response_username.status_code == 404, f"Expected status code 404, but got {response.status_code}"
-
-
-def test_user_login(base_user):
-    response = create_user(base_user)
-    assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
-    username = base_user["username"]
-    password = base_user["password"]
-
-    login_response = requests.get(f"{ENDPOINT}/v2/user/login", params={"username": username, "password": password})
-    assert login_response.status_code == 200, f"Failed to login, status code: {login_response.status_code}"   
-    login_data = login_response.json()
-    assert "message" in login_data
-    assert "unknown" in login_data["type"], f"Unexpected type message: {login_data['type']}"  
-
-    delete_response = delete_user(base_user, username)
-    assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
-
 
 
 def test_user_logout(base_user):

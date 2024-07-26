@@ -4,15 +4,6 @@ import requests
 from config.config import ENDPOINT, LOGIN_URL
 
 
-@pytest.fixture
-def auth_token():
-    username = "test"
-    password = "abc123"
-    response = requests.get(LOGIN_URL, params={"username": username, "password": password})
-    response.raise_for_status()
-    # Predefined authorization token (example)
-    return "YOUR_API_TOKEN"
-
 def test_add_pet_authorized(auth_token):
     payload = {
         "id": 0,

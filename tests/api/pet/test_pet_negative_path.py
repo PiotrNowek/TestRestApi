@@ -90,28 +90,6 @@ def test_get_pet_by_invalid_id():
     assert response_data["type"] == "error", f"Expected type message 'error', but got {response_data['type']}"
 
 
-@pytest.fixture
-def non_exist_pet():
-    return {
-        "id" : 999999999, # We assume this ID does not exist
-        "category" : {
-            "id" : 0,
-            "name" : "string"
-        },
-        "name" : "Ghost",
-        "photoUrls" : [
-            "string"
-        ],
-        "tags" : [
-            {
-                "id" : 0,
-                "name" : "string"
-            }
-        ],
-        "status" : "available"
-    }
-
-
 def test_update_non_exist_pet(non_exist_pet):
     response = requests.put(ENDPOINT + "/v2/pet", json=non_exist_pet)
     assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"

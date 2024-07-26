@@ -20,16 +20,6 @@ def test_get_pet_list_by_status():
     assert isinstance(response, dict), "Expected response to be a dictionary"
 
 
-@pytest.fixture
-def new_order():
-    def create_order(order_data):
-        response = requests.post(ORDER_ENDPOINT, json=order_data)
-        assert response.status_code == 200, f"Failed to create order, status code: {response.status_code}"
-        order = response.json()
-        return order
-    return create_order
-
-
 @pytest.mark.parametrize("order_data", [
     {
         "id": 0,
@@ -49,8 +39,8 @@ def new_order():
     }
 ])
 
-def test_create_order(new_order, order_data):
-    order = new_order(order_data)
+def test_create_order(new_order_store, order_data):
+    order = new_order_store(order_data)
     assert order is not None
     assert order["status"] == order_data["status"]
     assert order and order_data["complete"] == True
@@ -75,8 +65,8 @@ def test_create_order(new_order, order_data):
     }
 ])
 
-def test_get_order_by_id(new_order, order_data):
-    order = new_order(order_data)
+def test_get_order_by_id(new_order_store, order_data):
+    order = new_order_store(order_data)
     response = requests.get(f"{ORDER_ENDPOINT}/{order['id']}")
     assert response.status_code == 200, f"Failed to get order, status code: {response.status_code}"
     valid_order = response.json()
@@ -103,8 +93,8 @@ def test_get_order_by_id(new_order, order_data):
     }
 ])
 
-def test_delete_order(new_order, order_data):
-    order = new_order(order_data)
+def test_delete_order(new_order_store, order_data):
+    order = new_order_store(order_data)
     response = requests.delete(f"{ORDER_ENDPOINT}/{order['id']}")
     assert response.status_code == 200, f"Failed to delete order, status code: {response.status_code}"
     response = requests.get(f"{ORDER_ENDPOINT}/{order['id']}")
