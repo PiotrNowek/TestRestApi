@@ -27,10 +27,6 @@ def test_delete_negative_id(order_id, expected_status):
     assert response.status_code == expected_status, f"Expected status code {expected_status} but got {response.status_code}"
 
 
-@pytest.fixture
-def create_order_url():
-    return f"{ENDPOINT}/v2/store/order"
-
 @pytest.mark.parametrize("payload, expected_status", [
     ({"id": 1, "petId": 1, "quantity": 1, "shipDate": 1, "status": "placed", "complete": True}, 400),
     ({"id": 1, "petId": 1, "quantity": 1, "shipDate": "2024-07-18T09:10:32.000Z", "status": "placed"*100, "complete": True}, 400),
@@ -41,10 +37,6 @@ def test_create_boundary_order(create_order_url, payload, expected_status):
     response = requests.post(create_order_url, json=payload)
     assert response.status_code == expected_status, f"Expected status code {expected_status} but got {response.status_code}"
 
-
-@pytest.fixture
-def create_order_url():
-    return f"{ENDPOINT}/v2/store/order"
 
 @pytest.mark.parametrize("order_id, expected_status", [
     ("a" * 128, 404),
