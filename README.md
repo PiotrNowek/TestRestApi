@@ -16,10 +16,112 @@ How to Run
     Launch Postman - Fire up the engines and start exploring the API.
     Unleash Pytest - May the testing Force be with you!
 
+Test Structure
+
+Our tests are organized in a way that ensures clarity and ease of use. Here's a breakdown of the structure:
+
+tests/api/: This is where our finest Jedi test cases are trained in the art of endpoint combat. For example, tests for the 'pet' endpoint are in tests/api/pet/ and tests for the 'user' endpoint are in tests/api/user/. May your tests be as precise as a lightsaber strike!
+
+tests/config: In this secret hangar of the Death Star, we store maps and coordinates of intergalactic endpoints. Remember, young Padawan, here you will find everything you need for your tests to travel safely through the vast expanses of code! 🌌
+
+/TestRestApi.postman_collection.json: Welcome to the Postman Galactic Collections, where each request is like a starship ready for hyperspace jump! Here you’ll find our meticulously crafted blueprints for interstellar communication with the API universe.
+
+Example Tests
+
+Here are two short examples of test cases:
+
+Postman Test Example (in a Postman collection):
+
+{
+	"info": {
+		"_postman_id": "61159455-ffa9-4580-bc18-07c102bf890e",
+		"name": "TestRestApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36686341"
+	},
+	"item": [
+		{
+			"name": "Pets",
+			"item": [
+				{
+					"name": "Upload file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "8eZPut7vq/pet.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/1/uploadImage",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"1",
+								"uploadImage"
+							]
+						}
+					},
+					"response": []
+				}
+
+Pytest Test Example (in tests/api/user/test_user_happy_path.py):
+
+def test_user_login_and_logout(base_user):
+    response = create_user(base_user)
+    assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
+    username = base_user["username"]
+    password = base_user["password"]
+
+    login_response = requests.get(f"{ENDPOINT}/v2/user/login", params={"username": username, "password": password})
+    assert login_response.status_code == 200, f"Failed to login, status code: {login_response.status_code}"   
+    login_data = login_response.json()
+    assert "message" in login_data
+    assert "unknown" in login_data["type"]  
+
+    logout_response = requests.get(f"{ENDPOINT}/v2/user/logout")
+    logout_response.status_code == 200, f"Failed to logout, status code: {login_response.status_code}" 
+    logout_data = logout_response.json()
+    assert "ok" in logout_data["message"], f"Unexpected logout message: {logout_data['message']}"
+
+    delete_response = delete_user(base_user, username)
+    assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
+
 How to Contribute
 
     Fork the repository - Become a new recruit in our galactic mission.
     Create pull requests - Add your innovative tests and strengthen our forces!
+
+About the Author
+
+I'm a budding programmer embarking on this interstellar journey of API testing. With a passion for learning and a drive to master the art of coding, I'm excited to contribute to the galaxy of Swaggernauts. Together, we'll explore the farthest reaches of the API universe and ensure that no bug escapes our vigilant watch.
 
 License
 
