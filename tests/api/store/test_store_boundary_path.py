@@ -6,7 +6,7 @@ from config.config import ENDPOINT
 
 def test_check_endpoint():
     response = requests.get(ENDPOINT)
-    assert response.status_code == 200, f"Failed to create order, status code: {response.status_code}"
+    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
 
 
 @pytest.mark.parametrize("url, expected_status", [
