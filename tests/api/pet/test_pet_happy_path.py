@@ -5,7 +5,7 @@ from config.config import ENDPOINT
 
 def test_check_endpoint():
     response = requests.get(ENDPOINT)
-    assert response.status_code == 200
+    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
     
 
 def test_create_new_pet(base_pet):
@@ -18,9 +18,9 @@ def test_create_new_pet(base_pet):
     assert get_pet_by_id_response.status_code == 200, f"Failed to get pet by id, status code: {get_pet_by_id_response.status_code}"
     
     get_pet_by_id = get_pet_by_id_response.json()
-    assert get_pet_by_id["id"] == pet_id
-    assert get_pet_by_id["name"] == base_pet["name"]
-    assert get_pet_by_id["status"] == base_pet["status"]
+    assert get_pet_by_id["id"] == pet_id, f"Expected {pet_id}, but got {get_pet_by_id['id']}."
+    assert get_pet_by_id["name"] == base_pet["name"], f"Expected pet name {base_pet['name']}, but got {get_pet_by_id['name']}."
+    assert get_pet_by_id["status"] == base_pet["status"], f"Expected pet status {base_pet['status']}, but got {get_pet_by_id['status']}."
 
     delete_pet_by_id = delete_pet(pet_id)
     assert delete_pet_by_id.status_code == 200, f"Failed to delete pet, status code: {delete_pet_by_id.status_code}"
@@ -57,9 +57,9 @@ def test_update_pet(base_pet):
     assert get_pet_by_id_response.status_code == 200, f"Failed to get pet by id, status code: {get_pet_by_id_response.status_code}"
 
     get_pet_by_id = get_pet_by_id_response.json()
-    assert get_pet_by_id["id"] == pet_id
-    assert get_pet_by_id["name"] == new_payload["name"]
-    assert get_pet_by_id["status"] == new_payload["status"]
+    assert get_pet_by_id["id"] == pet_id, f"Expected {pet_id}, but got {get_pet_by_id['id']}."
+    assert get_pet_by_id["name"] == new_payload["name"], f"Expected pet name {new_payload['name']}, but got {get_pet_by_id['name']}."
+    assert get_pet_by_id["status"] == new_payload["status"], f"Expected pet status {new_payload['status']}, but got {get_pet_by_id['status']}."
 
     delete_pet_by_id = delete_pet(pet_id)
     assert delete_pet_by_id.status_code == 200, f"Failed to delete pet, status code: {delete_pet_by_id.status_code}"

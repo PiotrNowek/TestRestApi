@@ -52,8 +52,8 @@ def test_get_user_with_list(payload):
     try:
         response = response.json()
     except ValueError:
-        assert False, "Response is not in JSON format"
-    assert isinstance(response, dict), "Expected response to be a dictionary"
+        assert False, f"Response is not in JSON format"
+    assert isinstance(response, dict), f"Expected response to be a dictionary"
 
 
 @pytest.mark.parametrize("payload", [
@@ -84,12 +84,16 @@ def test_create_new_user(payload):
     response = create_user(payload)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     username = payload["username"]
+
     response_username = get_username(username)
     assert response_username.status_code == 200, f"Failed to get username, status code: {response.status_code}"
     second_data = response_username.json()
-    assert second_data["username"] == username
-    assert second_data["email"] == payload["email"]
-    assert second_data["phone"] == payload["phone"]
+    assert second_data["username"] == username, f"Expected {second_data ['username']} to be equal username"
+    assert second_data["email"] == payload["email"], f"Expected email to be {payload['email']}, but got {second_data['email']}."
+    assert second_data["phone"] == payload["phone"], f"Expected email to be {payload['phone']}, but got {second_data['phone']}."
+
+    delete_response = delete_user(payload, username)
+    assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
     
     
 def test_update_user(base_user):
@@ -114,9 +118,9 @@ def test_update_user(base_user):
     response_username = get_username(username)
     assert response_username.status_code == 200, f"Failed to get username, status code: {response.status_code}"
     data = response_username.json()
-    assert data["username"] == payload["username"]
-    assert data["lastName"] == payload["lastName"]
-    assert data["password"] == payload["password"]
+    assert data["username"] == payload["username"], f"Expected username to be {payload['username']}, but got {data['username']}."
+    assert data["lastName"] == payload["lastName"], f"Expected username to be {payload['lastName']}, but got {data['lastName']}."
+    assert data["password"] == payload["password"], f"Expected username to be {payload['password']}, but got {data['password']}."
 
     delete_response = delete_user(base_user, base_username)
     assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
@@ -143,8 +147,8 @@ def test_user_login_and_logout(base_user):
     login_response = requests.get(f"{ENDPOINT}/v2/user/login", params={"username": username, "password": password})
     assert login_response.status_code == 200, f"Failed to login, status code: {login_response.status_code}"   
     login_data = login_response.json()
-    assert "message" in login_data
-    assert "unknown" in login_data["type"]  
+    assert "message" in login_data, f"'message' key not found in the response data."
+    assert "unknown" in login_data["type"], f"Expected message 'unknown', but got '{login_data['type']}'" 
 
     logout_response = requests.get(f"{ENDPOINT}/v2/user/logout")
     logout_response.status_code == 200, f"Failed to logout, status code: {login_response.status_code}" 
@@ -197,8 +201,8 @@ def test_get_user_with_array(payload):
     try:
         response = response.json()
     except ValueError:
-        assert False, "Response is not in JSON format"
-    assert isinstance(response, dict), "Expected response to be a dictionary"
+        assert False, f"Response is not in JSON format"
+    assert isinstance(response, dict), f"Expected response to be a dictionary"
 
 
 def create_user(payload):

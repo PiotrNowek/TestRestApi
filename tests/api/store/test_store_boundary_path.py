@@ -15,7 +15,7 @@ def test_check_endpoint():
 
 def test_delete_order_with_no_id(url, expected_status):
     response = requests.delete(url)
-    assert response.status_code == expected_status, f"Expected status code {expected_status} but got {response.status_code}"
+    assert response.status_code == expected_status, f"Expected status code 405, but got {response.status_code}"
 
 
 @pytest.mark.parametrize("order_id, expected_status", [
@@ -24,7 +24,7 @@ def test_delete_order_with_no_id(url, expected_status):
 
 def test_delete_negative_id(order_id, expected_status):
     response = requests.delete(f"{ENDPOINT}/v2/store/order/{order_id}")
-    assert response.status_code == expected_status, f"Expected status code {expected_status} but got {response.status_code}"
+    assert response.status_code == expected_status, f"Expected status code 404, but got {response.status_code}"
 
 
 @pytest.mark.parametrize("payload, expected_status", [
@@ -35,7 +35,7 @@ def test_delete_negative_id(order_id, expected_status):
 
 def test_create_boundary_order(create_order_url, payload, expected_status):
     response = requests.post(create_order_url, json=payload)
-    assert response.status_code == expected_status, f"Expected status code {expected_status} but got {response.status_code}"
+    assert response.status_code == expected_status, f"Expected status code 400, but got {response.status_code}"
 
 
 @pytest.mark.parametrize("order_id, expected_status", [

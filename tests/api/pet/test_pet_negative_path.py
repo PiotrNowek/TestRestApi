@@ -6,7 +6,7 @@ from config.config import ENDPOINT
 
 def test_check_endpoint():
     response = requests.get(ENDPOINT)
-    assert response.status_code == 200
+    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
 
 
 def test_add_pet_with_missing_id():

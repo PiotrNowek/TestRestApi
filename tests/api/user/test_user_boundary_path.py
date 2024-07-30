@@ -100,7 +100,7 @@ def test_login_with_max_length_username_and_password():
     login_response = requests.get(f"{ENDPOINT}/v2/user/login", params={"username": base_user["username"], "password": base_user["password"]})
     assert login_response.status_code == 200, f"Failed to login, status code: {login_response.status_code}"
     login_data = login_response.json()
-    assert "message" in login_data
+    assert "message" in login_data, f"'message' key not found in the response data."
     
 
 def create_user(base_user):
