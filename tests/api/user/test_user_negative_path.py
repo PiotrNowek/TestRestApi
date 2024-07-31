@@ -19,6 +19,9 @@ def test_check_endpoint():
 
 
 def test_create_user_with_invalid_params(user_data, expected_status):
+    """
+    Test creating a user with invalid parameters.
+    """
     response = create_user(user_data)
     assert response.status_code == expected_status, f"Expected status code 400, but got {response.status_code}" 
 
@@ -35,6 +38,9 @@ def test_create_user_with_invalid_params(user_data, expected_status):
 
 
 def test_get_user_by_id(username, expected_status):
+    """
+    Test getting a user by id with invalid parameters.
+    """
     get_user_response = get_username(username)
     assert get_user_response.status_code == expected_status, f"Expected status code 404, but got {get_user_response.status_code}"
     
@@ -46,6 +52,9 @@ def test_get_user_by_id(username, expected_status):
 
 
 def test_update_user(base_user, username, expected_status):
+    """
+    Test creating a user and update a user with invalid parameters.
+    """
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
 
@@ -63,6 +72,9 @@ def test_update_user(base_user, username, expected_status):
 
 
 def test_delete_user(username):
+    """
+    Test deleting a user with invalid parameters.
+    """
     response = delete_user(username)
     assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
 
@@ -75,6 +87,9 @@ def test_delete_user(username):
 ]) #bug - logs all cases
 
 def test_login_user_negative(username, password, expected_status):
+    """
+    Test logging a user with invalid parameters.
+    """
     response = requests.get(f"{ENDPOINT}/v2/user/login", params={"username": username, "password": password})
     assert response.status_code == expected_status, f"Expected status code 400, but got {response.status_code}"
     

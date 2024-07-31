@@ -17,6 +17,9 @@ def test_check_endpoint():
 
 
 def test_create_user_with_boundary_params(user_data, expected_status):
+    """
+    The test checks the creation of users with boundary parameters.
+    """
     response = create_user(user_data)
     assert response.status_code == expected_status, f"Expected status code 400, but got {response.status_code}"
 
@@ -26,6 +29,9 @@ def test_create_user_with_boundary_params(user_data, expected_status):
 
 
 def test_update_user_with_boundary_param(base_user):
+    """
+    The test checks the update of user with boundary parameters.
+    """
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
 
@@ -72,6 +78,9 @@ def test_update_user_with_boundary_param(base_user):
 
 
 def test_delete_user_with_boundary_param(payload):
+    """
+    The test checks the delete of user with boundary parameters.
+    """
     response = create_user(payload)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
 
@@ -84,6 +93,9 @@ def test_delete_user_with_boundary_param(payload):
 
 
 def test_login_with_max_length_username_and_password():
+    """
+    The test checks the login of user with boundary parameters.
+    """
     max_length_username = "a" * 255
     max_length_password = "b" * 255
     base_user = {

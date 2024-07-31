@@ -43,6 +43,9 @@ def test_check_endpoint():
 ])
 
 def test_get_user_with_list(payload):
+    """
+    Test creating a list of users and verifying the response.
+    """
     headers = {
         "Content-Type": "application/json"
     }
@@ -81,6 +84,9 @@ def test_get_user_with_list(payload):
 
 
 def test_create_new_user(payload):
+    """
+    Test creating a users and verifying the response.
+    """
     response = create_user(payload)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     username = payload["username"]
@@ -97,6 +103,9 @@ def test_create_new_user(payload):
     
     
 def test_update_user(base_user):
+    """
+    Test creata a user, update a user and verifying the response.
+    """
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     base_username = base_user["username"]
@@ -127,6 +136,9 @@ def test_update_user(base_user):
 
 
 def test_delete_user(base_user):
+    """
+    Test creata a user, delete a user and verifying the response.
+    """
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     username = base_user["username"]
@@ -139,6 +151,9 @@ def test_delete_user(base_user):
 
 
 def test_user_login_and_logout(base_user):
+    """
+    Test creates a user and checks the correct login and logout from the system
+    """
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     username = base_user["username"]
@@ -192,6 +207,9 @@ def test_user_login_and_logout(base_user):
 ])
 
 def test_get_user_with_array(payload):
+    """
+    Test creating a list of users and verifying the response.
+    """
     headers = {
         "Content-Type": "application/json"
     }
