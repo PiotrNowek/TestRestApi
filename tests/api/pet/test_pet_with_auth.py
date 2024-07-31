@@ -5,6 +5,9 @@ from config.config import ENDPOINT, LOGIN_URL
 
 
 def test_add_pet_authorized(auth_token):
+    """
+    Test creating a new pet with authorization token
+    """
     payload = {
         "id": 0,
         "category": {

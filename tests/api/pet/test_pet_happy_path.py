@@ -9,6 +9,9 @@ def test_check_endpoint():
     
 
 def test_create_new_pet(base_pet):
+    """
+    Test creating a new pet and check is it correct.
+    """
     create_pet_response = create_pet(base_pet)
     assert create_pet_response.status_code == 200, f"Failed to create pet, status code: {create_pet_response.status_code}"
     
@@ -27,6 +30,9 @@ def test_create_new_pet(base_pet):
 
 
 def test_update_pet(base_pet):
+    """
+    Test creating a new pet, update a pet and check is it correct.
+    """
     create_pet_response = create_pet(base_pet)
     assert create_pet_response.status_code == 200, f"Failed to create pet, status code: {create_pet_response.status_code}"
 
@@ -66,6 +72,9 @@ def test_update_pet(base_pet):
 
 
 def test_delete_pet(base_pet):
+    """
+    Test creates a new pet and checks if it was deleted correctly
+    """
     create_pet_response = create_pet(base_pet)
     assert create_pet_response.status_code == 200, f"Failed to create pet, status code: {create_pet_response.status_code}"
 
