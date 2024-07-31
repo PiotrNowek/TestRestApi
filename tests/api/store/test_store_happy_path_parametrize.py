@@ -10,6 +10,9 @@ def test_check_endpoint():
 
 
 def test_get_pet_list_by_status():
+    """
+    Test get pet list and checks if the list is in json format
+    """
     response = requests.get(f"{ENDPOINT}/v2/store/inventory")
     assert response.status_code == 200, f"Failed to create list, status code: {response.status_code}"
     assert response.headers['Content-Type'] == 'application/json', f"Expected application/json but got {response.headers['Content-Type']}"
@@ -40,6 +43,9 @@ def test_get_pet_list_by_status():
 ])
 
 def test_create_order(new_order_store, order_data):
+    """
+    Test creates an order and checks if it is correct
+    """
     order = new_order_store(order_data)
     assert order is not None, f"Expected order to be initialized, but it is None"
     assert order["status"] == order_data["status"], f"Expected order status to be {order_data['status']}, but got {order['status']}"
@@ -66,6 +72,9 @@ def test_create_order(new_order_store, order_data):
 ])
 
 def test_get_order_by_id(new_order_store, order_data):
+    """
+    Test checks the correct getting of the order by id
+    """
     order = new_order_store(order_data)
     response = requests.get(f"{ORDER_ENDPOINT}/{order['id']}")
     assert response.status_code == 200, f"Failed to get order, status code: {response.status_code}"
@@ -94,6 +103,9 @@ def test_get_order_by_id(new_order_store, order_data):
 ])
 
 def test_delete_order(new_order_store, order_data):
+    """
+    Test checks the correct deletion of the order
+    """
     order = new_order_store(order_data)
     response = requests.delete(f"{ORDER_ENDPOINT}/{order['id']}")
     assert response.status_code == 200, f"Failed to delete order, status code: {response.status_code}"
