@@ -6,10 +6,13 @@ from config.config import ENDPOINT
 
 def test_check_endpoint():
     response = requests.get(ENDPOINT)
-    assert response.status_code == 200
+    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
 
 
 def test_min_name_lenght():
+    """
+    Test checks it is possible to create a pet with minimum name lenght
+    """
     payload = {
         "id": 101,
         "category": {
@@ -34,6 +37,9 @@ def test_min_name_lenght():
 
 
 def test_max_name_lenght():
+    """
+    Test checks it is possible to create a pet with maximum name lenght
+    """
     long_name = "a" * 256
     payload = {
         "id": 56,
@@ -59,6 +65,9 @@ def test_max_name_lenght():
 
 
 def test_create_pet_with_missing_required_fields():
+    """
+    Test checks it is possible to create a pet with missing required fields
+    """
     payload = {
     }
     response = requests.post(ENDPOINT + "/v2/pet", json=payload)
@@ -66,6 +75,9 @@ def test_create_pet_with_missing_required_fields():
 
 
 def test_request_too_large():
+    """
+    Test checks it is possible to create a pet with too large url
+    """
     payload = {
         "id": 1,
         "name": "Janek",
@@ -78,6 +90,9 @@ def test_request_too_large():
     
 
 def test_get_pet_with_invalid_status():
+    """
+    Test checks it is possible to get a pet with invalid status
+    """
     payload = {
         "id": 1010,
         "category": {
@@ -102,6 +117,9 @@ def test_get_pet_with_invalid_status():
 
 
 def test_get_pet_with_empty_status():
+    """
+    Test checks it is possible to get a pet with empty status
+    """
     payload = {
         "id": 1011,
         "category": {
@@ -126,6 +144,9 @@ def test_get_pet_with_empty_status():
 
 
 def test_get_pet_with_missing_status():
+    """
+    Test checks it is possible to get a pet with missing status
+    """
     payload = {
         "id": 1012,
         "category": {

@@ -6,6 +6,9 @@ from config.config import ENDPOINT, ORDER_ENDPOINT, LOGIN_URL
 
 @pytest.fixture
 def new_order():
+    '''
+    Fixture to create a new order for a pet in the system.
+    '''
     new_order = {
         "id": 0,
         "petId": 0,
@@ -26,6 +29,9 @@ def new_order():
 
 @pytest.fixture
 def delete_order():
+    '''
+    Fixture to delete a order for a pet in the system.
+    '''
     order = {
         "id": 0,
         "petId": 0,
@@ -43,6 +49,9 @@ def delete_order():
 
 @pytest.fixture
 def non_exist_pet():
+    '''
+    Fixture to create a non existent pet in the system.
+    '''
     return {
         "id" : 999999999, # We assume this ID does not exist
         "category" : {
@@ -65,6 +74,9 @@ def non_exist_pet():
 
 @pytest.fixture
 def auth_token():
+    '''
+    Fixture to create a API Token for authorization.
+    '''
     username = "test"
     password = "abc123"
     response = requests.get(LOGIN_URL, params={"username": username, "password": password})
@@ -75,11 +87,17 @@ def auth_token():
 
 @pytest.fixture
 def create_order_url():
+    '''
+    Fixture to create a new order url for a pet in the system.
+    '''
     return f"{ENDPOINT}/v2/store/order"
 
 
 @pytest.fixture
 def new_order_store():
+    '''
+    Fixture to create a new order for a pet in the system from order data.
+    '''
     def create_order(order_data):
         response = requests.post(ORDER_ENDPOINT, json=order_data)
         assert response.status_code == 200, f"Failed to create order, status code: {response.status_code}"
@@ -90,6 +108,9 @@ def new_order_store():
 
 @pytest.fixture
 def base_user():
+    '''
+    Fixture to create a new user in the system.
+    '''
     return {
         "id": 0,
         "username": "Rambo",
@@ -104,6 +125,9 @@ def base_user():
 
 @pytest.fixture
 def base_pet():
+    '''
+    Fixture to create a new pet in the system.
+    '''
     return {
         "id": 0,
         "category": {

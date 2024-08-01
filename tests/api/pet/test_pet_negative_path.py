@@ -6,10 +6,13 @@ from config.config import ENDPOINT
 
 def test_check_endpoint():
     response = requests.get(ENDPOINT)
-    assert response.status_code == 200
+    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
 
 
 def test_add_pet_with_missing_id():
+    """
+    Test checks if it is possible to add a pet with a missing id
+    """
     payload = {
         "category": {
             "id": 0,
@@ -30,6 +33,9 @@ def test_add_pet_with_missing_id():
 
 
 def test_add_pet_with_invalid_id():
+    """
+    Test checks if it is possible to add a pet with an invalid id
+    """
     payload = {
         "id": "invalid_id",  
         "category": {
@@ -55,6 +61,9 @@ def test_add_pet_with_invalid_id():
 
 
 def test_add_pet_with_empty_id():
+    """
+    Test checks if it is possible to add a pet with an empty id
+    """
     payload = {
         "id": "",  
         "category": {
@@ -81,6 +90,9 @@ def test_add_pet_with_empty_id():
     
 
 def test_get_pet_by_invalid_id():
+    """
+    Test checks if it is possible to get a pet with a invalid id
+    """
     invalid_pet_id = 9999999991 # We assume this ID does not exist
     response = requests.get(ENDPOINT + f"/v2/pet/{invalid_pet_id}")
     assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
@@ -91,6 +103,9 @@ def test_get_pet_by_invalid_id():
 
 
 def test_update_non_exist_pet(non_exist_pet):
+    """
+    Test checks if it is possible to update a non-existent pet
+    """
     response = requests.put(ENDPOINT + "/v2/pet", json=non_exist_pet)
     assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
     response_data = response.json()
@@ -99,12 +114,18 @@ def test_update_non_exist_pet(non_exist_pet):
   
 
 def test_delete_non_exist_pet():
+    """
+    Test checks if it is possible to delete a non-existent pet
+    """
     non_exist_pet_id = 8888888 # We assume this ID does not exist
     response = requests.delete(ENDPOINT + f"/v2/pet/{non_exist_pet_id}")
     assert response.status_code == 404, f"Expected status code 404, but got {response.status_code}"
  
 
 def test_invalid_Content_Type_header():
+    """
+    Test creating a new pet with invalid Content-Type header.
+    """
     payload = {
         "id": 5050,  
         "category": {
@@ -130,6 +151,9 @@ def test_invalid_Content_Type_header():
 
 
 def test_missing_Content_Type_header():
+    """
+    Test creating a new pet without a Content-Type header.
+    """
     payload = {
         "id": 50505,  
         "category": {
@@ -153,6 +177,9 @@ def test_missing_Content_Type_header():
 
 
 def test_empty_Content_Type_header():
+    """
+    Test creating a new pet with empty Content-Type header.
+    """
     payload = {
         "id": 505050,  
         "category": {
@@ -177,6 +204,9 @@ def test_empty_Content_Type_header():
 
 
 def test_requesting_invalid_endpoint():
+    """
+    Test checks it is possible to send a request to a non-existent endpoint
+    """
     payload = {
         "id": 10010,
         "category": {
