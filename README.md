@@ -32,6 +32,7 @@ Here are two short examples of test cases:
 
 Postman Test Example (in a Postman collection):
 
+```json
 {
 	"info": {
 		"_postman_id": "61159455-ffa9-4580-bc18-07c102bf890e",
@@ -91,6 +92,7 @@ Postman Test Example (in a Postman collection):
 					},
 					"response": []
 				}
+```
 
 Pytest Test Example (in `tests/api/user/test_user_happy_path.py`)
 
