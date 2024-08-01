@@ -146,3 +146,24 @@ def base_pet():
         ],
         "status": "available"
     }
+
+
+created_users = []
+"""
+Global list to store usernames created during testing
+"""
+
+
+@pytest.fixture(autouse=True)
+def cleanup_users():
+    """
+    Deletes all users created during testing.
+    """
+    yield
+    while created_users: 
+        username = created_users.pop()
+        response = requests.delete(f"{ENDPOINT}/v2/user/{username}")
+        if response.status_code == 200:
+            print(f"Deleted user: {username}")
+        else:
+            print(f"User {username} not found or already deleted.")

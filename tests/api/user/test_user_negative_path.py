@@ -2,7 +2,7 @@ import pytest
 import requests
 
 from config.config import ENDPOINT
-
+from conftest import created_users
 
 def test_check_endpoint():
     response = requests.get(ENDPOINT)
@@ -24,12 +24,10 @@ def test_create_user_with_invalid_params(user_data, expected_status):
     """
     response = create_user(user_data)
     assert response.status_code == expected_status, f"Expected status code 400, but got {response.status_code}" 
-
     username = user_data["username"]
-    delete_response = delete_user(username)
-    assert delete_response.status_code == 200, f"Failed to delete user, status code: {delete_response.status_code}"
+    created_users.append(username)
 
-
+    
 @pytest.mark.parametrize("username, expected_status", [
 ({"username": ""},404), 
 ({"username": "Bambo" * 100},404),
@@ -56,15 +54,14 @@ def test_update_user(base_user, username, expected_status):
     Test creating a user and update a user with invalid parameters.
     """
     response = create_user(base_user)
+    base_username = base_user["username"]
+    created_users.append(base_username)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
 
     update_response = update_user(username, expected_status)
     assert update_response == expected_status, f"Expected status code 200, but got {update_response.status_code}"
 
-    delete_response = delete_user(username)
-    assert delete_response.status_code == 200, f"Failed to delete user, status code: {delete_response.status_code}"
-
-
+    
 @pytest.mark.parametrize("username",[
     ({"username": "Rambo" * 100}),
     ({"username": ""})

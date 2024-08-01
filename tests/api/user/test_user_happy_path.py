@@ -2,28 +2,8 @@ import pytest
 import requests
 
 from config.config import ENDPOINT
+from conftest import created_users
 
-
-created_users = []
-"""
-Global list to store usernames created during testing
-"""
-
-
-@pytest.fixture(autouse=True)
-def cleanup():
-    """
-    Deletes all users created during testing.
-    """
-    yield
-    while created_users: 
-        username = created_users.pop()
-        response = requests.delete(f"{ENDPOINT}/v2/user/{username}")
-        if response.status_code == 200:
-            print(f"Deleted user: {username}")
-        else:
-            print(f"User {username} not found or already deleted.")
-    
 
 def test_check_endpoint():
     response = requests.get(ENDPOINT)

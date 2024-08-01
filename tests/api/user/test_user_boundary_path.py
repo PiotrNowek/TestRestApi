@@ -2,7 +2,7 @@ import pytest
 import requests
 
 from config.config import ENDPOINT
-
+from conftest import created_users
 
 def test_check_endpoint():
     response = requests.get(ENDPOINT)
@@ -22,18 +22,18 @@ def test_create_user_with_boundary_params(user_data, expected_status):
     """
     response = create_user(user_data)
     assert response.status_code == expected_status, f"Expected status code 400, but got {response.status_code}"
-
     username = user_data["username"]
-    delete_response = delete_user(username)
-    assert delete_response.status_code == 200, f"Failed to delete user, status code: {delete_response.status_code}"
+    created_users.append(username)
 
-
+   
 def test_update_user_with_boundary_param(base_user):
     """
     The test checks the update of user with boundary parameters.
     """
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
+    base_username = base_user["username"]
+    created_users.append(base_username)
 
     payload = {
         "id": 0,
@@ -46,13 +46,11 @@ def test_update_user_with_boundary_param(base_user):
         "userStatus": 0
     } #bug - updated user with integer username
     username = payload["username"]
+    created_users.append(username)
     update_response = update_user(payload, username)
     assert update_response.status_code == 400, f"Expected status code 400, but got {response.status_code}"
 
-    delete_response = delete_user(username)
-    assert delete_response.status_code == 200, f"Failed to delete user, status code: {delete_response.status_code}"
     
-
 @pytest.mark.parametrize("payload", [
     ({
         "id": 0,
@@ -83,8 +81,9 @@ def test_delete_user_with_boundary_param(payload):
     """
     response = create_user(payload)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
-
     username = payload["username"]
+    created_users.append(username)
+
     delete_response = delete_user(username)
     assert delete_response.status_code == 200, f"Failed to delete user, status code: {delete_response.status_code}"
    
@@ -107,6 +106,8 @@ def test_login_with_max_length_username_and_password():
     }
 
     create_response = create_user(base_user)
+    base_username = base_user["username"]
+    created_users.append(base_username)
     assert create_response.status_code == 200, f"Failed to create user, status code: {create_response.status_code}"
 
     login_response = requests.get(f"{ENDPOINT}/v2/user/login", params={"username": base_user["username"], "password": base_user["password"]})
