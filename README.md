@@ -92,9 +92,13 @@ Postman Test Example (in a Postman collection):
 					"response": []
 				}
 
-Pytest Test Example (in tests/api/user/test_user_happy_path.py):
+Pytest Test Example (in `tests/api/user/test_user_happy_path.py`)
 
+```python
 def test_user_login_and_logout(base_user):
+    """
+    Test creates a user and checks the correct login and logout from the system
+    """
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     username = base_user["username"]
@@ -103,16 +107,17 @@ def test_user_login_and_logout(base_user):
     login_response = requests.get(f"{ENDPOINT}/v2/user/login", params={"username": username, "password": password})
     assert login_response.status_code == 200, f"Failed to login, status code: {login_response.status_code}"   
     login_data = login_response.json()
-    assert "message" in login_data
-    assert "unknown" in login_data["type"]  
+    assert "message" in login_data, f"'message' key not found in the response data."
+    assert "unknown" in login_data["type"], f"Expected message 'unknown', but got '{login_data['type']}'" 
 
     logout_response = requests.get(f"{ENDPOINT}/v2/user/logout")
-    logout_response.status_code == 200, f"Failed to logout, status code: {login_response.status_code}" 
+    assert logout_response.status_code == 200, f"Failed to logout, status code: {login_response.status_code}" 
     logout_data = logout_response.json()
     assert "ok" in logout_data["message"], f"Unexpected logout message: {logout_data['message']}"
 
     delete_response = delete_user(base_user, username)
     assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
+```
 
 How to Contribute
 
