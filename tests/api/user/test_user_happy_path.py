@@ -4,6 +4,27 @@ import requests
 from config.config import ENDPOINT
 
 
+created_users = []
+"""
+Global list to store usernames created during testing
+"""
+
+
+@pytest.fixture(autouse=True)
+def cleanup():
+    """
+    Deletes all users created during testing.
+    """
+    yield
+    while created_users: 
+        username = created_users.pop()
+        response = requests.delete(f"{ENDPOINT}/v2/user/{username}")
+        if response.status_code == 200:
+            print(f"Deleted user: {username}")
+        else:
+            print(f"User {username} not found or already deleted.")
+    
+
 def test_check_endpoint():
     response = requests.get(ENDPOINT)
     assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
@@ -41,6 +62,7 @@ def test_check_endpoint():
         "userStatus": 2
     }])
 ])
+
 
 def test_get_user_with_list(payload):
     """
@@ -90,6 +112,7 @@ def test_create_new_user(payload):
     response = create_user(payload)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     username = payload["username"]
+    created_users.append(username)
 
     response_username = get_username(username)
     assert response_username.status_code == 200, f"Failed to get username, status code: {response.status_code}"
@@ -98,9 +121,6 @@ def test_create_new_user(payload):
     assert second_data["email"] == payload["email"], f"Expected email to be {payload['email']}, but got {second_data['email']}."
     assert second_data["phone"] == payload["phone"], f"Expected email to be {payload['phone']}, but got {second_data['phone']}."
 
-    delete_response = delete_user(payload, username)
-    assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
-    
     
 def test_update_user(base_user):
     """
@@ -109,6 +129,7 @@ def test_update_user(base_user):
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     base_username = base_user["username"]
+    created_users.append(base_username)
 
     payload = {
         "id": 0,
@@ -131,9 +152,6 @@ def test_update_user(base_user):
     assert data["lastName"] == payload["lastName"], f"Expected username to be {payload['lastName']}, but got {data['lastName']}."
     assert data["password"] == payload["password"], f"Expected username to be {payload['password']}, but got {data['password']}."
 
-    delete_response = delete_user(base_user, base_username)
-    assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
-
 
 def test_delete_user(base_user):
     """
@@ -142,6 +160,7 @@ def test_delete_user(base_user):
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     username = base_user["username"]
+    created_users.append(username)
     
     delete_response = delete_user(base_user, username)
     assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
@@ -158,6 +177,7 @@ def test_user_login_and_logout(base_user):
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     username = base_user["username"]
     password = base_user["password"]
+    created_users.append(username)
 
     login_response = requests.get(f"{ENDPOINT}/v2/user/login", params={"username": username, "password": password})
     assert login_response.status_code == 200, f"Failed to login, status code: {login_response.status_code}"   
@@ -170,9 +190,7 @@ def test_user_login_and_logout(base_user):
     logout_data = logout_response.json()
     assert "ok" in logout_data["message"], f"Unexpected logout message: {logout_data['message']}"
 
-    delete_response = delete_user(base_user, username)
-    assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
-
+    
 @pytest.mark.parametrize("payload", [
     ([{
         "id": 0,
@@ -205,6 +223,7 @@ def test_user_login_and_logout(base_user):
         "userStatus": 2
     }])
 ])
+
 
 def test_get_user_with_array(payload):
     """
