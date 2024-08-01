@@ -167,3 +167,24 @@ def cleanup_users():
             print(f"Deleted user: {username}")
         else:
             print(f"User {username} not found or already deleted.")
+
+
+created_pets = []
+"""
+Global list to store pets created during testing
+"""
+
+
+@pytest.fixture(autouse=True)
+def cleanup_pets():
+    """
+    Deletes all pets created during testing.
+    """
+    yield
+    while created_pets: 
+        pet_id = created_pets.pop()
+        response = requests.delete(f"{ENDPOINT}/v2/pet/{pet_id}")
+        if response.status_code == 200:
+            print(f"Deleted pet: {pet_id}")
+        else:
+            print(f"Pet {pet_id} not found or already deleted.")
