@@ -5,43 +5,28 @@ from config.config import ENDPOINT, ORDER_ENDPOINT, LOGIN_URL
 
 
 @pytest.fixture
-def new_order():
+def base_pet():
     '''
-    Fixture to create a new order for a pet in the system.
+    Fixture to create a new pet in the system.
     '''
-    new_order = {
+    return {
         "id": 0,
-        "petId": 0,
-        "quantity": 1,
-        "shipDate": "2024-07-16T19:20:30.45Z",
-        "status": "placed",
-        "complete": True
+        "category": {
+            "id": 0,
+            "name": "string"
+        },
+        "name": "dog",
+        "photoUrls": [
+            "string"
+        ],
+        "tags": [
+            {
+                "id": 0,
+                "name": "string"
+            }
+        ],
+        "status": "available"
     }
-    response = requests.post(ORDER_ENDPOINT, json=new_order)
-    assert response.status_code == 200, f"Failed to create order, status code: {response.status_code}"
-
-    order = response.json()
-    yield order
-
-   
-@pytest.fixture
-def delete_order():
-    '''
-    Fixture to delete a order for a pet in the system.
-    '''
-    order = {
-        "id": 0,
-        "petId": 0,
-        "quantity": 1,
-        "shipDate": "2024-07-16T19:20:30.45Z",
-        "status": "placed",
-        "complete": True
-    }
-    response = requests.post(ORDER_ENDPOINT, json=order)
-    assert response.status_code == 200, f"Failed to create order, status code: {response.status_code}"
-
-    order = response.json()
-    yield order
 
 
 @pytest.fixture
@@ -82,14 +67,47 @@ def auth_token():
     return "YOUR_API_TOKEN"
 
 
+created_pets = []
+"""
+Global list to store pets created during testing
+"""
+
+
+@pytest.fixture(autouse=True)
+def cleanup_pets():
+    """
+    Deletes all pets created during testing.
+    """
+    yield
+    while created_pets: 
+        pet_id = created_pets.pop()
+        response = requests.delete(f"{ENDPOINT}/v2/pet/{pet_id}")
+        if response.status_code == 200:
+            print(f"Deleted pet: {pet_id}")
+        else:
+            print(f"Pet {pet_id} not found or already deleted.")
+
+
 @pytest.fixture
-def create_order_url():
+def new_order():
     '''
-    Fixture to create a new order url for a pet in the system.
+    Fixture to create a new order for a pet in the system.
     '''
-    return f"{ENDPOINT}/v2/store/order"
+    new_order = {
+        "id": 0,
+        "petId": 0,
+        "quantity": 1,
+        "shipDate": "2024-07-16T19:20:30.45Z",
+        "status": "placed",
+        "complete": True
+    }
+    response = requests.post(ORDER_ENDPOINT, json=new_order)
+    assert response.status_code == 200, f"Failed to create order, status code: {response.status_code}"
 
+    order = response.json()
+    yield order
 
+   
 @pytest.fixture
 def new_order_store():
     '''
@@ -101,6 +119,55 @@ def new_order_store():
         order = response.json()
         return order
     return create_order
+
+
+@pytest.fixture
+def delete_order():
+    '''
+    Fixture to delete a order for a pet in the system.
+    '''
+    order = {
+        "id": 0,
+        "petId": 0,
+        "quantity": 1,
+        "shipDate": "2024-07-16T19:20:30.45Z",
+        "status": "placed",
+        "complete": True
+    }
+    response = requests.post(ORDER_ENDPOINT, json=order)
+    assert response.status_code == 200, f"Failed to create order, status code: {response.status_code}"
+
+    order = response.json()
+    yield order
+
+
+@pytest.fixture
+def create_order_url():
+    '''
+    Fixture to create a new order url for a pet in the system.
+    '''
+    return f"{ENDPOINT}/v2/store/order"
+
+
+created_orders = []
+"""
+Global list to store orders created during testing
+"""
+
+
+@pytest.fixture(autouse=True)
+def cleanup_orders():
+    """
+    Deletes all orders created during testing.
+    """
+    yield
+    while created_pets: 
+        order_id = created_orders.pop()
+        response = requests.delete(f"{ORDER_ENDPOINT}/{order_id}")
+        if response.status_code == 200:
+            print(f"Deleted pet: {order_id}")
+        else:
+            print(f"Pet {order_id} not found or already deleted.")
 
 
 @pytest.fixture
@@ -117,31 +184,6 @@ def base_user():
         "password": "password1",
         "phone": "123456789",
         "userStatus": 0
-    }
-
-
-@pytest.fixture
-def base_pet():
-    '''
-    Fixture to create a new pet in the system.
-    '''
-    return {
-        "id": 0,
-        "category": {
-            "id": 0,
-            "name": "string"
-        },
-        "name": "dog",
-        "photoUrls": [
-            "string"
-        ],
-        "tags": [
-            {
-                "id": 0,
-                "name": "string"
-            }
-        ],
-        "status": "available"
     }
 
 
@@ -166,43 +208,6 @@ def cleanup_users():
             print(f"User {username} not found or already deleted.")
 
 
-created_pets = []
-"""
-Global list to store pets created during testing
-"""
 
 
-@pytest.fixture(autouse=True)
-def cleanup_pets():
-    """
-    Deletes all pets created during testing.
-    """
-    yield
-    while created_pets: 
-        pet_id = created_pets.pop()
-        response = requests.delete(f"{ENDPOINT}/v2/pet/{pet_id}")
-        if response.status_code == 200:
-            print(f"Deleted pet: {pet_id}")
-        else:
-            print(f"Pet {pet_id} not found or already deleted.")
 
-
-created_orders = []
-"""
-Global list to store orders created during testing
-"""
-
-
-@pytest.fixture(autouse=True)
-def cleanup_orders():
-    """
-    Deletes all orders created during testing.
-    """
-    yield
-    while created_pets: 
-        order_id = created_orders.pop()
-        response = requests.delete(f"{ORDER_ENDPOINT}/{order_id}")
-        if response.status_code == 200:
-            print(f"Deleted pet: {order_id}")
-        else:
-            print(f"Pet {order_id} not found or already deleted.")
