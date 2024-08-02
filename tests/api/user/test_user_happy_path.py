@@ -140,14 +140,13 @@ def test_delete_user(base_user):
     response = create_user(base_user)
     assert response.status_code == 200, f"Failed to create user, status code: {response.status_code}"
     username = base_user["username"]
-    created_users.append(username)
     
     delete_response = delete_user(base_user, username)
     assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
 
     response_username = get_username(username)
     assert response_username.status_code == 404, f"Expected status code 404, but got {response.status_code}"
-
+    
 
 def test_user_login_and_logout(base_user):
     """

@@ -23,10 +23,7 @@ def new_order():
     order = response.json()
     yield order
 
-    delete_response = requests.delete(f"{ORDER_ENDPOINT}/{order['id']}")
-    assert delete_response.status_code == 200, f"Failed to delete order, status code: {delete_response.status_code}"
-
-
+   
 @pytest.fixture
 def delete_order():
     '''
@@ -188,3 +185,24 @@ def cleanup_pets():
             print(f"Deleted pet: {pet_id}")
         else:
             print(f"Pet {pet_id} not found or already deleted.")
+
+
+created_orders = []
+"""
+Global list to store orders created during testing
+"""
+
+
+@pytest.fixture(autouse=True)
+def cleanup_orders():
+    """
+    Deletes all orders created during testing.
+    """
+    yield
+    while created_pets: 
+        order_id = created_orders.pop()
+        response = requests.delete(f"{ORDER_ENDPOINT}/{order_id}")
+        if response.status_code == 200:
+            print(f"Deleted pet: {order_id}")
+        else:
+            print(f"Pet {order_id} not found or already deleted.")
