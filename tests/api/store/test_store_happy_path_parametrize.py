@@ -2,6 +2,7 @@ import pytest
 import requests
 
 from config.config import ENDPOINT, ORDER_ENDPOINT
+from conftest import created_orders
 
 
 def test_check_endpoint():
@@ -46,6 +47,8 @@ def test_create_order(new_order_store, order_data):
     """
     Test creates an order and checks if it is correct
     """
+    order_id = order_data["id"]
+    created_orders.append(order_id)
     order = new_order_store(order_data)
     assert order is not None, f"Expected order to be initialized, but it is None"
     assert order["status"] == order_data["status"], f"Expected order status to be {order_data['status']}, but got {order['status']}"
