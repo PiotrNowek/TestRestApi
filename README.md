@@ -1,36 +1,37 @@
-Swaggernauts - Conquering APIs with Postman and Pytest
-About the Project
+# Swaggernauts - Conquering APIs with Postman and Pytest
+
+## About the Project
 
 Welcome to an epic adventure through the galaxy of APIs! Our mission: to test the universe of Swagger using the cosmic tools of Postman and Pytest.
-Goal
+
+## Goal
 
 When Star Wars meets Postman and Pytest, there's no room for errors. We're creating intergalactic tests that will make APIs run faster than the Millennium Falcon!
-Features
 
-    Postman: Our star pilot for sending and receiving messages from the API.
-    Pytest: The Force that makes our tests as strong and reliable as Master Yoda.
+## Features
 
-How to Run
+- **Postman**: Our star pilot for sending and receiving messages from the API.
+- **Pytest**: The Force that makes our tests as strong and reliable as Master Yoda.
 
-    Clone the repository - Load your spaceship with the code.
-    Launch Postman - Fire up the engines and start exploring the API.
-    Unleash Pytest - May the testing Force be with you!
+## How to Run
 
-Test Structure
+1. **Clone the repository** - Load your spaceship with the code.
+2. **Launch Postman** - Fire up the engines and start exploring the API.
+3. **Unleash Pytest** - May the testing Force be with you!
+
+## Test Structure
 
 Our tests are organized in a way that ensures clarity and ease of use. Here's a breakdown of the structure:
 
-tests/api/: This is where our finest Jedi test cases are trained in the art of endpoint combat. For example, tests for the 'pet' endpoint are in tests/api/pet/ and tests for the 'user' endpoint are in tests/api/user/. May your tests be as precise as a lightsaber strike!
+- **`tests/api/`**: This is where our finest Jedi test cases are trained in the art of endpoint combat. For example, tests for the `pet` endpoint are in `tests/api/pet/` and tests for the `user` endpoint are in `tests/api/user/`. May your tests be as precise as a lightsaber strike!
 
-tests/config: In this secret hangar of the Death Star, we store maps and coordinates of intergalactic endpoints. Remember, young Padawan, here you will find everything you need for your tests to travel safely through the vast expanses of code! 🌌
+- **`tests/config/`**: In this secret hangar of the Death Star, we store maps and coordinates of intergalactic endpoints. Remember, young Padawan, here you will find everything you need for your tests to travel safely through the vast expanses of code! 🌌
 
-/TestRestApi.postman_collection.json: Welcome to the Postman Galactic Collections, where each request is like a starship ready for hyperspace jump! Here you’ll find our meticulously crafted blueprints for interstellar communication with the API universe.
+- **`/TestRestApi.postman_collection.json`**: Welcome to the Postman Galactic Collections, where each request is like a starship ready for a hyperspace jump! Here you’ll find our meticulously crafted blueprints for interstellar communication with the API universe.
 
-Example Tests
+## Example Tests
 
-Here are two short examples of test cases:
-
-Postman Test Example (in a Postman collection):
+### Postman Test Example (in a Postman collection):
 
 ```json
 {
@@ -94,7 +95,7 @@ Postman Test Example (in a Postman collection):
 				}
 ```
 
-Pytest Test Example (in `tests/api/user/test_user_happy_path.py`)
+### Pytest Test Example (in `tests/api/user/test_user_happy_path.py`)
 
 ```python
 def test_user_login_and_logout(base_user):
@@ -121,19 +122,19 @@ def test_user_login_and_logout(base_user):
     assert delete_response.status_code == 200, f"Failed to delete user, status code: {response.status_code}"
 ```
 
-How to Contribute
+## How to Contribute
 
-    Fork the repository - Become a new recruit in our galactic mission.
-    Create pull requests - Add your innovative tests and strengthen our forces!
+- **Fork the repository** - Become a new recruit in our galactic mission.
+- **Create pull requests** - Add your innovative tests and strengthen our forces!
 
-About the Author
+## About the Author
 
 I'm a budding programmer embarking on this interstellar journey of API testing. With a passion for learning and a drive to master the art of coding, I'm excited to contribute to the galaxy of Swaggernauts. Together, we'll explore the farthest reaches of the API universe and ensure that no bug escapes our vigilant watch.
 
-License
+## License
 
 This code is as free as the Millennium Falcon in hyperspace. Use it, modify it, and share it to make the world of APIs a safer place!
 
-"Remember, every tested endpoint is a step closer to Jedi mastery in API testing!"
+**"Remember, every tested endpoint is a step closer to Jedi mastery in API testing!"**
 
 Enjoy your project! 🚀
