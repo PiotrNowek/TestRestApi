@@ -43,56 +43,76 @@ Our tests are organized in a way that ensures clarity and ease of use. Here's a 
 	},
 	"item": [
 		{
-			"name": "Pets",
-			"item": [
+			"name": "Add pet",
+			"event": [
 				{
-					"name": "Upload file",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Validate that the response code should be 200\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "8eZPut7vq/pet.png"
-								}
-							]
-						},
-						"url": {
-							"raw": "https://petstore.swagger.io/v2/pet/1/uploadImage",
-							"protocol": "https",
-							"host": [
-								"petstore",
-								"swagger",
-								"io"
-							],
-							"path": [
-								"v2",
-								"pet",
-								"1",
-								"uploadImage"
-							]
-						}
-					},
-					"response": []
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate that the response code should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const schema = {\r",
+							"    \"id\": 0,\r",
+							"  \"category\": {\r",
+							"    \"id\": 0,\r",
+							"    \"name\": \"string\"\r",
+							"  },\r",
+							"  \"name\": \"doggie\",\r",
+							"  \"photoUrls\": [\r",
+							"    \"string\"\r",
+							"  ],\r",
+							"  \"tags\": [\r",
+							"    {\r",
+							"      \"id\": 0,\r",
+							"      \"name\": \"string\"\r",
+							"    }\r",
+							"  ],\r",
+							"  \"status\": \"available\"\r",
+							"}\r",
+							"\r",
+							"if (pm.response.code === 200){\r",
+							"\t\t pm.test('Schema is valid', () => {\r",
+							"     const response = pm.response.json();\r",
+							"     pm.expect(response).to.have.jsonSchema(schema);\r",
+							"     })\r",
+							"\t}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
 				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 0,\r\n  \"category\": {\r\n    \"id\": 0,\r\n    \"name\": \"string\"\r\n  },\r\n  \"name\": \"doggie\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://petstore.swagger.io/v2/pet",
+					"protocol": "https",
+					"host": [
+						"petstore",
+						"swagger",
+						"io"
+					],
+					"path": [
+						"v2",
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
 ```
 
 ### Pytest Test Example (in `tests/api/user/test_user_happy_path.py`)
